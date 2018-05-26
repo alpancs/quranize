@@ -2,14 +2,57 @@ package quran
 
 import (
 	"strings"
+
+	"github.com/alpancs/quran/corpus"
 )
 
-var (
+type Transliteration struct {
 	hijaiyas       map[string][]string
 	alphabetMaxLen int
+}
 
+var (
+	q    = NewQuranSimpleClean()
+	t    = NewDefaultTransliteration()
 	base = []string{""}
 )
+
+func init() {
+	q.BuildIndex()
+}
+
+func NewDefaultTransliteration() Transliteration {
+	return ParseTransliteration(corpus.ArabicToAlphabet)
+}
+
+func ParseTransliteration(raw string) Transliteration {
+	hijaiyas := make(map[string][]string)
+	alphabetMaxLen := 0
+
+	trimmed := strings.TrimSpace(raw)
+	for _, line := range strings.Split(trimmed, "\n") {
+		components := strings.Split(line, " ")
+		arabic := components[0]
+		for _, alphabet := range components[1:] {
+			hijaiyas[alphabet] = append(hijaiyas[alphabet], arabic)
+
+			length := len(alphabet)
+			ending := alphabet[length-1]
+			if ending == 'a' || ending == 'i' || ending == 'o' || ending == 'u' {
+				alphabet = alphabet[:length-1] + alphabet[:length-1] + alphabet[length-1:]
+			} else {
+				alphabet += alphabet
+			}
+			hijaiyas[alphabet] = append(hijaiyas[alphabet], arabic)
+			length = len(alphabet)
+			if length > alphabetMaxLen {
+				alphabetMaxLen = length
+			}
+		}
+	}
+
+	return Transliteration{hijaiyas, alphabetMaxLen}
+}
 
 // Returns arabic encodings of given string.
 func Encode(s string) []string {
@@ -18,24 +61,11 @@ func Encode(s string) []string {
 	s = strings.ToLower(s)
 	results := []string{}
 	for _, result := range quranize(s, memo) {
-		if len(Locate(result)) > 0 {
+		if len(q.Locate(result)) > 0 {
 			results = appendUniq(results, result)
 		}
 	}
 	return results
-}
-
-// Returns locations of s (quran kalima), matching the whole word.
-func Locate(s string) []Location {
-	harfs := []rune(s)
-	node := root
-	for _, harf := range harfs {
-		node = getChild(node.children, harf)
-		if node == nil {
-			return zeroLocs
-		}
-	}
-	return node.locations
 }
 
 func quranize(s string, memo map[string][]string) []string {
@@ -49,11 +79,11 @@ func quranize(s string, memo map[string][]string) []string {
 
 	kalimas := []string{}
 	l := len(s)
-	for width := 1; width <= alphabetMaxLen && width <= l; width++ {
-		if tails, ok := hijaiyas[s[l-width:]]; ok {
+	for width := 1; width <= t.alphabetMaxLen && width <= l; width++ {
+		if tails, ok := t.hijaiyas[s[l-width:]]; ok {
 			heads := quranize(s[:l-width], memo)
 			for _, combination := range combine(heads, tails) {
-				if exists(combination) {
+				if q.exists(combination) {
 					kalimas = appendUniq(kalimas, combination)
 				}
 			}
@@ -79,18 +109,6 @@ func combine(heads, tails []string) []string {
 		}
 	}
 	return combinations
-}
-
-func exists(s string) bool {
-	harfs := []rune(s)
-	node := root
-	for _, harf := range harfs {
-		node = getChild(node.children, harf)
-		if node == nil {
-			return false
-		}
-	}
-	return true
 }
 
 func appendUniq(results []string, newResult string) []string {
