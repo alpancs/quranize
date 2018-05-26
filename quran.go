@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"io/ioutil"
 
 	"github.com/alpancs/quran/corpus"
 )
@@ -42,25 +41,16 @@ var (
 	zeroLocs = make([]Location, 0, 0)
 )
 
-// Returns Quran from given file path.
-func LoadQuran(filePath string) (q Quran, err error) {
-	raw, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return
-	}
-	return ParseQuran(raw)
-}
-
 // Returns Quran from given raw.
-func ParseQuran(raw []byte) (q Quran, err error) {
-	err = xml.Unmarshal(raw, &q)
+func ParseQuran(raw string) (q Quran, err error) {
+	err = xml.Unmarshal([]byte(raw), &q)
 	return
 }
 
 // Return new instance from quran-simple-clean.xml.
 // See corpus/QuranSimpleClean.
 func NewQuranSimpleClean() Quran {
-	q, _ := ParseQuran([]byte(corpus.QuranSimpleCleanXML))
+	q, _ := ParseQuran(corpus.QuranSimpleCleanXML)
 	return q
 }
 
