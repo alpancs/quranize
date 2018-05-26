@@ -1,21 +1,10 @@
 package quran
 
 import (
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
-
-var (
-	quranTest        = NewQuranSimpleClean()
-	quranTestIndexed = NewQuranSimpleClean()
-)
-
-func TestMain(m *testing.M) {
-	quranTestIndexed.BuildIndex()
-	os.Exit(m.Run())
-}
 
 func TestGetAyaFound(t *testing.T) {
 	text, err := quranTest.GetAya(1, 1)

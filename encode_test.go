@@ -9,14 +9,14 @@ import (
 func TestEncodeEmptyString(t *testing.T) {
 	input := ""
 	expected := []string{}
-	actual := Encode(input)
+	actual := transliterationTest.Encode(input)
 	assert.Equal(t, expected, actual)
 }
 
 func TestEncodeNonAlquran(t *testing.T) {
 	input := "alfan nur fauzan"
 	expected := []string{}
-	actual := Encode(input)
+	actual := transliterationTest.Encode(input)
 	assert.Equal(t, expected, actual)
 }
 
@@ -41,7 +41,7 @@ func TestEncodeAlquran(t *testing.T) {
 		"shirotholladzina an'am ta'alaihim ghoiril maghdzu bi'alaihim waladh dhollin": []string{"صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين"},
 	}
 	for input, expected := range testCases {
-		actual := Encode(input)
+		actual := transliterationTest.Encode(input)
 		assert.Equal(t, expected, actual)
 	}
 }

@@ -9,23 +9,20 @@ import (
 type Transliteration struct {
 	hijaiyas       map[string][]string
 	alphabetMaxLen int
+	q              Quran
 }
 
 var (
-	q    = NewQuranSimpleClean()
-	t    = NewDefaultTransliteration()
 	base = []string{""}
 )
 
-func init() {
-	q.BuildIndex()
-}
-
+// Returns new Transliteration using map {corpus.ArabicToAlphabet} and Quran {corpus.QuranSimpleCleanXML}.
 func NewDefaultTransliteration() Transliteration {
-	return ParseTransliteration(corpus.ArabicToAlphabet)
+	return NewTransliteration(corpus.ArabicToAlphabet, NewQuranSimpleClean())
 }
 
-func ParseTransliteration(raw string) Transliteration {
+// Returns new Transliteration.
+func NewTransliteration(raw string, q Quran) Transliteration {
 	hijaiyas := make(map[string][]string)
 	alphabetMaxLen := 0
 
@@ -51,24 +48,25 @@ func ParseTransliteration(raw string) Transliteration {
 		}
 	}
 
-	return Transliteration{hijaiyas, alphabetMaxLen}
+	q.BuildIndex()
+	return Transliteration{hijaiyas, alphabetMaxLen, q}
 }
 
-// Returns arabic encodings of given string.
-func Encode(s string) []string {
+// Returns arabic encodings of given string using Transliteration t.
+func (t Transliteration) Encode(s string) []string {
 	var memo = make(map[string][]string)
 	s = strings.Replace(s, " ", "", -1)
 	s = strings.ToLower(s)
 	results := []string{}
-	for _, result := range quranize(s, memo) {
-		if len(q.Locate(result)) > 0 {
+	for _, result := range t.quranize(s, memo) {
+		if len(t.q.Locate(result)) > 0 {
 			results = appendUniq(results, result)
 		}
 	}
 	return results
 }
 
-func quranize(s string, memo map[string][]string) []string {
+func (t Transliteration) quranize(s string, memo map[string][]string) []string {
 	if s == "" {
 		return base
 	}
@@ -81,9 +79,9 @@ func quranize(s string, memo map[string][]string) []string {
 	l := len(s)
 	for width := 1; width <= t.alphabetMaxLen && width <= l; width++ {
 		if tails, ok := t.hijaiyas[s[l-width:]]; ok {
-			heads := quranize(s[:l-width], memo)
+			heads := t.quranize(s[:l-width], memo)
 			for _, combination := range combine(heads, tails) {
-				if q.exists(combination) {
+				if t.q.exists(combination) {
 					kalimas = appendUniq(kalimas, combination)
 				}
 			}
