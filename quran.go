@@ -7,7 +7,6 @@ package quran
 
 import (
 	"encoding/xml"
-	"errors"
 	"fmt"
 
 	"github.com/alpancs/quran/corpus"
@@ -49,13 +48,13 @@ var (
 	zeroLocs = make([]Location, 0, 0)
 )
 
-// Returns Quran from given raw.
+// ParseQuran returns Quran from given raw.
 func ParseQuran(raw string) (q Quran, err error) {
 	err = xml.Unmarshal([]byte(raw), &q)
 	return
 }
 
-// Return new instance from quran-simple-clean.xml.
+// NewQuranSimpleClean returns new instance from quran-simple-clean.xml.
 //
 // See https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4.
 func NewQuranSimpleClean() Quran {
@@ -63,27 +62,27 @@ func NewQuranSimpleClean() Quran {
 	return q
 }
 
-// Returns sura name from sura number in Quran q (number starting from 1).
+// GetSuraName returns sura name from sura number in Quran q (number starting from 1).
 func (q Quran) GetSuraName(sura int) (string, error) {
 	if !(1 <= sura && sura <= len(q.Suras)) {
-		return "", errors.New(fmt.Sprintf("invalid sura number %d", sura))
+		return "", fmt.Errorf("invalid sura number %d", sura)
 	}
 	return q.Suras[sura-1].Name, nil
 }
 
-// Returns aya text from sura number and aya number in Quran q (number starting from 1).
+// GetAya returns aya text from sura number and aya number in Quran q (number starting from 1).
 func (q Quran) GetAya(sura, aya int) (string, error) {
 	if !(1 <= sura && sura <= len(q.Suras)) {
-		return "", errors.New(fmt.Sprintf("invalid sura number %d", sura))
+		return "", fmt.Errorf("invalid sura number %d", sura)
 	}
 	ayas := q.Suras[sura-1].Ayas
 	if !(1 <= aya && aya <= len(ayas)) {
-		return "", errors.New(fmt.Sprintf("invalid sura number %d and aya number %d", sura, aya))
+		return "", fmt.Errorf("invalid sura number %d and aya number %d", sura, aya)
 	}
 	return ayas[aya-1].Text, nil
 }
 
-// Returns locations of s (quran kalima) in Quran q, matching the whole word.
+// Locate returns locations of s (quran kalima) in Quran q, matching the whole word.
 func (q Quran) Locate(s string) []Location {
 	if q.root == nil {
 		return zeroLocs
@@ -100,7 +99,7 @@ func (q Quran) Locate(s string) []Location {
 	return node.locations
 }
 
-// Returns existence of s in Quran q.
+// exists returns existence of s in Quran q.
 func (q Quran) exists(s string) bool {
 	harfs := []rune(s)
 	node := q.root
@@ -113,7 +112,8 @@ func (q Quran) exists(s string) bool {
 	return true
 }
 
-// Build index for Quran q.
+// BuildIndex build index for Quran q.
+//
 // Without index,
 //   q.Locate
 // won't work.

@@ -17,7 +17,7 @@ var (
 	base = []string{""}
 )
 
-// Returns new default Transliteration.
+// NewDefaultTransliteration returns new default Transliteration.
 //
 // Default map: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3.
 //
@@ -26,7 +26,7 @@ func NewDefaultTransliteration() Transliteration {
 	return NewTransliteration(corpus.ArabicToAlphabet, NewQuranSimpleClean())
 }
 
-// Returns new Transliteration.
+// NewTransliteration returns new Transliteration.
 func NewTransliteration(raw string, q Quran) Transliteration {
 	hijaiyas := make(map[string][]string)
 	alphabetMaxLen := 0
@@ -57,7 +57,7 @@ func NewTransliteration(raw string, q Quran) Transliteration {
 	return Transliteration{hijaiyas, alphabetMaxLen, q}
 }
 
-// Returns arabic encodings of given string using Transliteration t.
+// Encode returns arabic encodings of given string using Transliteration t.
 func (t Transliteration) Encode(s string) []string {
 	var memo = make(map[string][]string)
 	s = strings.Replace(s, " ", "", -1)
