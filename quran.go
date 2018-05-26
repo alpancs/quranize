@@ -1,3 +1,8 @@
+// Package quran provides Go representation of Alquran.
+// Original source of Alquran is taken from http://tanzil.net in XML format.
+//
+// This package can transform alphabet into arabic using fast and efficient algorithm:
+// suffix-tree for indexing and dynamic programming for parsing.
 package quran
 
 import (
@@ -8,6 +13,8 @@ import (
 	"github.com/alpancs/quran/corpus"
 )
 
+// Quran stores information of every sura and aya.
+// It has suffix-tree index.
 type Quran struct {
 	Suras []struct {
 		Index int    `xml:"index,attr"`
@@ -26,6 +33,7 @@ type Node struct {
 	children  []Child
 }
 
+// Location in Quran.
 type Location struct {
 	Sura      int // sura number
 	Aya       int // aya number
@@ -48,7 +56,8 @@ func ParseQuran(raw string) (q Quran, err error) {
 }
 
 // Return new instance from quran-simple-clean.xml.
-// See corpus/QuranSimpleClean.
+//
+// See https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4.
 func NewQuranSimpleClean() Quran {
 	q, _ := ParseQuran(corpus.QuranSimpleCleanXML)
 	return q
@@ -91,7 +100,7 @@ func (q Quran) Locate(s string) []Location {
 	return node.locations
 }
 
-// Returns locations of s (quran kalima) in Quran q, matching the whole word.
+// Returns existence of s in Quran q.
 func (q Quran) exists(s string) bool {
 	harfs := []rune(s)
 	node := q.root
@@ -105,7 +114,9 @@ func (q Quran) exists(s string) bool {
 }
 
 // Build index for Quran q.
-// Without index, `Locate` function won't work.
+// Without index,
+//   q.Locate
+// won't work.
 func (q *Quran) BuildIndex() {
 	q.root = &Node{locations: zeroLocs}
 	for _, sura := range q.Suras {

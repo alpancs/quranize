@@ -6,6 +6,7 @@ import (
 	"github.com/alpancs/quran/corpus"
 )
 
+// Transliteration is used to encode arabic into alphabet.
 type Transliteration struct {
 	hijaiyas       map[string][]string
 	alphabetMaxLen int
@@ -16,7 +17,11 @@ var (
 	base = []string{""}
 )
 
-// Returns new Transliteration using map {corpus.ArabicToAlphabet} and Quran {corpus.QuranSimpleCleanXML}.
+// Returns new default Transliteration.
+//
+// Default map: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3.
+//
+// Default Quran: https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4.
 func NewDefaultTransliteration() Transliteration {
 	return NewTransliteration(corpus.ArabicToAlphabet, NewQuranSimpleClean())
 }
