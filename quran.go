@@ -24,12 +24,7 @@ type Quran struct {
 			Bismillah string `xml:"bismillah,attr"`
 		} `xml:"aya"`
 	} `xml:"sura"`
-	root *Node
-}
-
-type Node struct {
-	locations []Location
-	children  []Child
+	root *node
 }
 
 // Location in Quran.
@@ -39,9 +34,14 @@ type Location struct {
 	WordIndex int // assuming aya is splitted word by word
 }
 
-type Child struct {
+type node struct {
+	locations []Location
+	children  []child
+}
+
+type child struct {
 	key   rune
-	value *Node
+	value *node
 }
 
 var (
@@ -89,23 +89,23 @@ func (q Quran) Locate(s string) []Location {
 	}
 
 	harfs := []rune(s)
-	node := q.root
+	n := q.root
 	for _, harf := range harfs {
-		node = node.getChild(harf)
-		if node == nil {
+		n = n.getChild(harf)
+		if n == nil {
 			return zeroLocs
 		}
 	}
-	return node.locations
+	return n.locations
 }
 
 // exists returns existence of s in Quran q.
 func (q Quran) exists(s string) bool {
 	harfs := []rune(s)
-	node := q.root
+	n := q.root
 	for _, harf := range harfs {
-		node = node.getChild(harf)
-		if node == nil {
+		n = n.getChild(harf)
+		if n == nil {
 			return false
 		}
 	}
@@ -118,7 +118,7 @@ func (q Quran) exists(s string) bool {
 //   q.Locate
 // won't work.
 func (q *Quran) BuildIndex() {
-	q.root = &Node{locations: zeroLocs}
+	q.root = &node{locations: zeroLocs}
 	for _, sura := range q.Suras {
 		for _, aya := range sura.Ayas {
 			q.indexAya([]rune(aya.Text), sura.Index, aya.Index)
@@ -137,24 +137,24 @@ func (q *Quran) indexAya(harfs []rune, sura, aya int) {
 }
 
 func (q *Quran) buildTree(harfs []rune, location Location) {
-	node := q.root
+	n := q.root
 	for i, harf := range harfs {
-		child := node.getChild(harf)
-		if child == nil {
-			child = &Node{}
-			node.children = append(node.children, Child{harf, child})
+		c := n.getChild(harf)
+		if c == nil {
+			c = &node{}
+			n.children = append(n.children, child{harf, c})
 		}
-		node = child
+		n = c
 		if i == len(harfs)-1 || harfs[i+1] == ' ' {
-			node.locations = append(node.locations, location)
+			n.locations = append(n.locations, location)
 		}
 	}
 }
 
-func (n *Node) getChild(key rune) *Node {
-	for _, child := range n.children {
-		if child.key == key {
-			return child.value
+func (n *node) getChild(key rune) *node {
+	for _, c := range n.children {
+		if c.key == key {
+			return c.value
 		}
 	}
 	return nil
