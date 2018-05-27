@@ -1,10 +1,20 @@
 package quran
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+var (
+	quranizeTest Quranize
+)
+
+func TestMain(m *testing.M) {
+	quranizeTest = NewDefaultQuranize()
+	os.Exit(m.Run())
+}
 
 func TestEncodeEmptyString(t *testing.T) {
 	input := ""
