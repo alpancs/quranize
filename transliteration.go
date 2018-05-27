@@ -38,6 +38,10 @@ func NewTransliteration(raw string) Transliteration {
 		for _, alphabet := range components[1:] {
 			hijaiyas[alphabet] = append(hijaiyas[alphabet], arabic)
 
+			if alphabet[0] == 'y' {
+				hijaiyas["i"+alphabet] = append(hijaiyas["i"+alphabet], arabic)
+			}
+
 			length := len(alphabet)
 			ending := alphabet[length-1]
 			if ending == 'a' || ending == 'i' || ending == 'o' || ending == 'u' {
@@ -46,6 +50,7 @@ func NewTransliteration(raw string) Transliteration {
 				alphabet += alphabet
 			}
 			hijaiyas[alphabet] = append(hijaiyas[alphabet], arabic)
+
 			length = len(alphabet)
 			if length > alphabetMaxLen {
 				alphabetMaxLen = length
