@@ -6,6 +6,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestNewQuranSimpleClean(t *testing.T) {
+	expected := 114
+	actual := len(NewQuranSimpleClean().Suras)
+	assert.Equal(t, expected, actual)
+}
+
+func TestNewQuranSimpleEnhanced(t *testing.T) {
+	expected := 114
+	actual := len(NewQuranSimpleEnhanced().Suras)
+	assert.Equal(t, expected, actual)
+}
+
 func TestGetAyaFound(t *testing.T) {
 	text, err := quranTest.GetAya(1, 1)
 	assert.NoError(t, err)

@@ -1,3 +1,8 @@
+// Package quran provides Go representation of Alquran.
+// Original source of Alquran is taken from http://tanzil.net in XML format.
+//
+// This package can transform alphabet into arabic using fast and efficient algorithm:
+// suffix-tree for indexing and dynamic programming for parsing.
 package quran
 
 import (
@@ -32,7 +37,7 @@ var (
 	zeroLocs = make([]Location, 0, 0)
 )
 
-// NewDefaultQuranize returns new Quranize using default mapping and quran "quran-simple-clean.yml".
+// NewDefaultQuranize returns new Quranize using default mapping and quran "quran-simple-clean.xml".
 //
 // Mapping: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3
 //

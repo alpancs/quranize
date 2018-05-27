@@ -1,6 +1,6 @@
 package corpus
 
-// original file name: quran-simple-clean.xml
+// Original file name: "quran-simple-clean.xml".
 const QuranSimpleCleanXML = `
 <?xml version="1.0" encoding="utf-8" ?>
 <!--

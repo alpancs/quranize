@@ -1,8 +1,3 @@
-// Package quran provides Go representation of Alquran.
-// Original source of Alquran is taken from http://tanzil.net in XML format.
-//
-// This package can transform alphabet into arabic using fast and efficient algorithm:
-// suffix-tree for indexing and dynamic programming for parsing.
 package quran
 
 import (
@@ -26,11 +21,19 @@ type Quran struct {
 	} `xml:"sura"`
 }
 
-// NewQuranSimpleClean returns new instance from quran-simple-clean.xml.
+// NewQuranSimpleClean returns new instance from "quran-simple-clean.xml".
 //
 // See https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4.
 func NewQuranSimpleClean() Quran {
 	q, _ := ParseQuran(corpus.QuranSimpleCleanXML)
+	return q
+}
+
+// NewQuranSimpleEnhanced returns new instance from "quran-simple-clean.xml".
+//
+// See https://github.com/alpancs/quran/blob/master/corpus/quran_simple_enhanced.go#L4.
+func NewQuranSimpleEnhanced() Quran {
+	q, _ := ParseQuran(corpus.QuranSimpleEnhancedXML)
 	return q
 }
 
