@@ -10,11 +10,11 @@ type Quranize struct {
 	q Quran
 }
 
-// NewDefaultQuranize returns new Quranize using default mapping and quran quran-simple-clean.yml.
+// NewDefaultQuranize returns new Quranize using default mapping and quran "quran-simple-clean.yml".
 //
-// Default mapping: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3.
+// Mapping: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3
 //
-// Quran simple clean: https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4.
+// Quran: https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4
 func NewDefaultQuranize() Quranize {
 	return NewQuranize(NewDefaultTransliteration(), NewQuranSimpleClean())
 }

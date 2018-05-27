@@ -48,18 +48,18 @@ var (
 	zeroLocs = make([]Location, 0, 0)
 )
 
-// ParseQuran returns Quran from given raw.
-func ParseQuran(raw string) (q Quran, err error) {
-	err = xml.Unmarshal([]byte(raw), &q)
-	return
-}
-
 // NewQuranSimpleClean returns new instance from quran-simple-clean.xml.
 //
 // See https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4.
 func NewQuranSimpleClean() Quran {
 	q, _ := ParseQuran(corpus.QuranSimpleCleanXML)
 	return q
+}
+
+// ParseQuran returns Quran from given raw.
+func ParseQuran(raw string) (q Quran, err error) {
+	err = xml.Unmarshal([]byte(raw), &q)
+	return
 }
 
 // GetSuraName returns sura name from sura number in Quran q (number starting from 1).

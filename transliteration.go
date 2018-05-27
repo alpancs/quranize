@@ -18,7 +18,7 @@ var (
 
 // NewDefaultTransliteration returns new Transliteration using default mapping.
 //
-// Default mapping: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3.
+// Mapping: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3
 func NewDefaultTransliteration() Transliteration {
 	return NewTransliteration(corpus.ArabicToAlphabet)
 }
@@ -31,6 +31,9 @@ func NewTransliteration(raw string) Transliteration {
 	trimmed := strings.TrimSpace(raw)
 	for _, line := range strings.Split(trimmed, "\n") {
 		components := strings.Split(line, " ")
+		if len(components) < 2 {
+			continue
+		}
 		arabic := components[0]
 		for _, alphabet := range components[1:] {
 			hijaiyas[alphabet] = append(hijaiyas[alphabet], arabic)
