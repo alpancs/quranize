@@ -11,10 +11,7 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	quranizeTest = NewDefaultQuranize()
-
 	quranTest = NewQuranSimpleClean()
-	quranTestIndexed = quranizeTest.q
-
+	quranizeTest = NewDefaultQuranize()
 	os.Exit(m.Run())
 }

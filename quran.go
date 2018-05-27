@@ -24,29 +24,7 @@ type Quran struct {
 			Bismillah string `xml:"bismillah,attr"`
 		} `xml:"aya"`
 	} `xml:"sura"`
-	root *node
 }
-
-// Location in Quran.
-type Location struct {
-	Sura      int // sura number
-	Aya       int // aya number
-	WordIndex int // assuming aya is splitted word by word
-}
-
-type node struct {
-	locations []Location
-	children  []child
-}
-
-type child struct {
-	key   rune
-	value *node
-}
-
-var (
-	zeroLocs = make([]Location, 0, 0)
-)
 
 // NewQuranSimpleClean returns new instance from quran-simple-clean.xml.
 //
@@ -80,82 +58,4 @@ func (q Quran) GetAya(sura, aya int) (string, error) {
 		return "", fmt.Errorf("invalid sura number %d and aya number %d", sura, aya)
 	}
 	return ayas[aya-1].Text, nil
-}
-
-// Locate returns locations of s (quran kalima) in Quran q, matching the whole word.
-func (q Quran) Locate(s string) []Location {
-	if q.root == nil {
-		return zeroLocs
-	}
-
-	harfs := []rune(s)
-	n := q.root
-	for _, harf := range harfs {
-		n = n.getChild(harf)
-		if n == nil {
-			return zeroLocs
-		}
-	}
-	return n.locations
-}
-
-// exists returns existence of s in Quran q.
-func (q Quran) exists(s string) bool {
-	harfs := []rune(s)
-	n := q.root
-	for _, harf := range harfs {
-		n = n.getChild(harf)
-		if n == nil {
-			return false
-		}
-	}
-	return true
-}
-
-// BuildIndex build index for Quran q.
-//
-// Without index,
-//   q.Locate
-// won't work.
-func (q *Quran) BuildIndex() {
-	q.root = &node{locations: zeroLocs}
-	for _, sura := range q.Suras {
-		for _, aya := range sura.Ayas {
-			q.indexAya([]rune(aya.Text), sura.Index, aya.Index)
-		}
-	}
-}
-
-func (q *Quran) indexAya(harfs []rune, sura, aya int) {
-	sliceIndex := 0
-	for i := range harfs {
-		if i == 0 || harfs[i-1] == ' ' {
-			q.buildTree(harfs[i:], Location{sura, aya, sliceIndex})
-			sliceIndex++
-		}
-	}
-}
-
-func (q *Quran) buildTree(harfs []rune, location Location) {
-	n := q.root
-	for i, harf := range harfs {
-		c := n.getChild(harf)
-		if c == nil {
-			c = &node{}
-			n.children = append(n.children, child{harf, c})
-		}
-		n = c
-		if i == len(harfs)-1 || harfs[i+1] == ' ' {
-			n.locations = append(n.locations, location)
-		}
-	}
-}
-
-func (n *node) getChild(key rune) *node {
-	for _, c := range n.children {
-		if c.key == key {
-			return c.value
-		}
-	}
-	return nil
 }

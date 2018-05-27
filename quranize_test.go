@@ -46,3 +46,34 @@ func TestEncodeAlquran(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	}
 }
+
+func TestLocateEmptyString(t *testing.T) {
+	input := ""
+	expected := zeroLocs
+	actual := quranizeTest.Locate(input)
+	assert.Equal(t, expected, actual)
+}
+
+func TestLocateNonAlquran(t *testing.T) {
+	input := "alfan"
+	expected := zeroLocs
+	actual := quranizeTest.Locate(input)
+	assert.Equal(t, expected, actual)
+}
+
+func TestLocateAlquran(t *testing.T) {
+	input := "بسم الله الرحمن الرحيم"
+	expected := []Location{Location{1, 1, 0}, Location{27, 30, 4}}
+	actual := quranizeTest.Locate(input)
+	assert.Equal(t, expected, actual)
+}
+
+func TestLocateAlquranBeforeBuildIndex(t *testing.T) {
+	root := quranizeTest.root
+	defer func() { quranizeTest.root = root }()
+	quranizeTest.root = nil
+	input := "بسم الله الرحمن الرحيم"
+	expected := zeroLocs
+	actual := quranizeTest.Locate(input)
+	assert.Equal(t, expected, actual)
+}
