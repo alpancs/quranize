@@ -6,28 +6,25 @@ import (
 	"github.com/alpancs/quran/corpus"
 )
 
-// Transliteration is used to encode arabic into alphabet.
+// Transliteration helps Quranize to encode arabic into alphabet.
 type Transliteration struct {
 	hijaiyas       map[string][]string
 	alphabetMaxLen int
-	q              Quran
 }
 
 var (
 	base = []string{""}
 )
 
-// NewDefaultTransliteration returns new default Transliteration.
+// NewDefaultTransliteration returns new Transliteration using default mapping.
 //
-// Default map: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3.
-//
-// Default Quran: https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4.
+// Default mapping: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3.
 func NewDefaultTransliteration() Transliteration {
-	return NewTransliteration(corpus.ArabicToAlphabet, NewQuranSimpleClean())
+	return NewTransliteration(corpus.ArabicToAlphabet)
 }
 
 // NewTransliteration returns new Transliteration.
-func NewTransliteration(raw string, q Quran) Transliteration {
+func NewTransliteration(raw string) Transliteration {
 	hijaiyas := make(map[string][]string)
 	alphabetMaxLen := 0
 
@@ -53,72 +50,5 @@ func NewTransliteration(raw string, q Quran) Transliteration {
 		}
 	}
 
-	q.BuildIndex()
-	return Transliteration{hijaiyas, alphabetMaxLen, q}
-}
-
-// Encode returns arabic encodings of given string using Transliteration t.
-func (t Transliteration) Encode(s string) []string {
-	var memo = make(map[string][]string)
-	s = strings.Replace(s, " ", "", -1)
-	s = strings.ToLower(s)
-	results := []string{}
-	for _, result := range t.quranize(s, memo) {
-		if len(t.q.Locate(result)) > 0 {
-			results = appendUniq(results, result)
-		}
-	}
-	return results
-}
-
-func (t Transliteration) quranize(s string, memo map[string][]string) []string {
-	if s == "" {
-		return base
-	}
-
-	if cache, ok := memo[s]; ok {
-		return cache
-	}
-
-	kalimas := []string{}
-	l := len(s)
-	for width := 1; width <= t.alphabetMaxLen && width <= l; width++ {
-		if tails, ok := t.hijaiyas[s[l-width:]]; ok {
-			heads := t.quranize(s[:l-width], memo)
-			for _, combination := range combine(heads, tails) {
-				if t.q.exists(combination) {
-					kalimas = appendUniq(kalimas, combination)
-				}
-			}
-		}
-	}
-
-	memo[s] = kalimas
-	return kalimas
-}
-
-func combine(heads, tails []string) []string {
-	combinations := []string{}
-	for _, head := range heads {
-		for _, tail := range tails {
-			combinations = append(combinations, head+tail)
-			combinations = append(combinations, head+" "+tail)
-			combinations = append(combinations, head+"ا"+tail)
-			combinations = append(combinations, head+"ال"+tail)
-			combinations = append(combinations, head+" ال"+tail)
-			if tail == "و" {
-				combinations = append(combinations, head+tail+"ا")
-			}
-		}
-	}
-	return combinations
-}
-
-func appendUniq(results []string, newResult string) []string {
-	for _, result := range results {
-		if result == newResult {
-			return results
-		}
-	}
-	return append(results, newResult)
+	return Transliteration{hijaiyas, alphabetMaxLen}
 }

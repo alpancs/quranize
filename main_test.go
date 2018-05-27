@@ -7,14 +7,14 @@ import (
 
 var (
 	quranTest, quranTestIndexed Quran
-	transliterationTest         Transliteration
+	quranizeTest                Quranize
 )
 
 func TestMain(m *testing.M) {
-	transliterationTest = NewDefaultTransliteration()
+	quranizeTest = NewDefaultQuranize()
 
 	quranTest = NewQuranSimpleClean()
-	quranTestIndexed = transliterationTest.q
+	quranTestIndexed = quranizeTest.q
 
 	os.Exit(m.Run())
 }
