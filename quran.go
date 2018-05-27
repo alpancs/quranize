@@ -21,19 +21,35 @@ type Quran struct {
 	} `xml:"sura"`
 }
 
-// NewQuranSimpleClean returns new instance from "quran-simple-clean.xml".
-//
+// NewQuranSimpleClean returns new Quran instance using corpus:
+//  corpus.QuranSimpleCleanXML
 // See https://github.com/alpancs/quran/blob/master/corpus/quran_simple_clean.go#L4.
 func NewQuranSimpleClean() Quran {
 	q, _ := ParseQuran(corpus.QuranSimpleCleanXML)
 	return q
 }
 
-// NewQuranSimpleEnhanced returns new instance from "quran-simple-clean.xml".
-//
+// NewQuranSimpleEnhanced returns new Quran instance using corpus:
+//  corpus.QuranSimpleEnhancedXML
 // See https://github.com/alpancs/quran/blob/master/corpus/quran_simple_enhanced.go#L4.
 func NewQuranSimpleEnhanced() Quran {
 	q, _ := ParseQuran(corpus.QuranSimpleEnhancedXML)
+	return q
+}
+
+// NewIDIndonesian returns new Quran instance using corpus:
+//  corpus.IDIndonesianXML
+// See https://github.com/alpancs/quran/blob/master/corpus/id_indonesian.go#L4.
+func NewIDIndonesian() Quran {
+	q, _ := ParseQuran(corpus.IDIndonesianXML)
+	return q
+}
+
+// NewIDMuntakhab returns new Quran instance using corpus:
+//  corpus.IDMuntakhabXML
+// See https://github.com/alpancs/quran/blob/master/corpus/id_muntakhab.go#L4.
+func NewIDMuntakhab() Quran {
+	q, _ := ParseQuran(corpus.IDMuntakhabXML)
 	return q
 }
 
