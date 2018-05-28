@@ -1,6 +1,7 @@
 package quranize
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -55,6 +56,12 @@ func TestEncodeAlquran(t *testing.T) {
 		actual := quranizeTest.Encode(input)
 		assert.Equal(t, expected, actual)
 	}
+}
+
+func ExampleEncode() {
+	quranize := NewDefaultQuranize()
+	fmt.Println(quranize.Encode("alhamdulillah"))
+	// Output: [الحمد لله]
 }
 
 func TestLocateEmptyString(t *testing.T) {

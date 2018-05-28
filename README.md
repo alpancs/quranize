@@ -29,7 +29,7 @@ import (
 func main() {
   quranize := quranize.NewDefaultQuranize()
   fmt.Println(quranize.Encode("alhamdulillah"))
-  // output: [الحمد لله]
+  // Output: [الحمد لله]
 }
 ```
 
