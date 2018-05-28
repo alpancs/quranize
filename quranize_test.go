@@ -58,10 +58,16 @@ func TestEncodeAlquran(t *testing.T) {
 	}
 }
 
-func ExampleEncode() {
+func ExampleQuranize_Encode() {
 	quranize := NewDefaultQuranize()
-	fmt.Println(quranize.Encode("alhamdulillah"))
-	// Output: [الحمد لله]
+	fmt.Println(quranize.Encode("alhamdulillah hirobbil 'alamin"))
+	// Output: [الحمد لله رب العالمين]
+}
+
+func ExampleQuranize_Locate() {
+	quranize := NewDefaultQuranize()
+	fmt.Println(quranize.Locate("الحمد لله رب العالمين"))
+	// Output: [{1 2 0} {10 10 10} {39 75 13} {40 65 10}]
 }
 
 func TestLocateEmptyString(t *testing.T) {
