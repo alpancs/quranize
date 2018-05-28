@@ -27,9 +27,24 @@ import (
 )
 
 func main() {
-  quranize := quranize.NewDefaultQuranize()
-  fmt.Println(quranize.Encode("alhamdulillah"))
-  // Output: [الحمد لله]
+  q := quranize.NewDefaultQuranize()
+  quran := quranize.NewQuranSimpleEnhanced()
+
+  encodeds := q.Encode("alhamdulillah hirobbil 'alamin")
+  fmt.Println(encodeds)
+  // Output: [الحمد لله رب العالمين]
+
+  locations := q.Locate(encodeds[0])
+  fmt.Println(locations)
+  // Output: [{1 2 0} {10 10 10} {39 75 13} {40 65 10}]
+
+  suraName, _ := quran.GetSuraName(locations[0].Sura)
+  fmt.Println(suraName)
+  // Output: الفاتحة
+
+  aya, _ := quran.GetAya(locations[0].Sura, locations[0].Aya)
+  fmt.Println(aya)
+  // Output: الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ
 }
 ```
 
