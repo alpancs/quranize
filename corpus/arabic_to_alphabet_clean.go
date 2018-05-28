@@ -1,6 +1,6 @@
 package corpus
 
-const ArabicToAlphabet = `
+const ArabicToAlphabetClean = `
 ء ' k a
 آ a aa
 أ a u ' k

@@ -39,7 +39,7 @@ var (
 
 // NewDefaultQuranize returns new Quranize using default mapping and quran "quran-simple-clean.xml".
 //
-// Mapping: https://github.com/alpancs/quranize/blob/master/corpus/arabic_to_alphabet.go#L3
+// Mapping: https://github.com/alpancs/quranize/blob/master/corpus/arabic_to_alphabet_clean.go#L3
 //
 // Quran: https://github.com/alpancs/quranize/blob/master/corpus/quran_simple_clean.go#L4
 func NewDefaultQuranize() Quranize {
