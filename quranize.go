@@ -7,6 +7,7 @@ package quranize
 
 import (
 	"strings"
+	"sync"
 )
 
 // Quranize encodes arabic into alphabet.
@@ -34,6 +35,8 @@ type child struct {
 }
 
 var (
+	q        Quranize
+	once     sync.Once
 	zeroLocs = make([]Location, 0, 0)
 )
 
@@ -43,12 +46,15 @@ var (
 //
 // Quran: https://github.com/alpancs/quranize/blob/master/corpus/quran_simple_clean.go#L4
 func NewDefaultQuranize() Quranize {
-	return NewQuranize(NewDefaultTransliteration(), NewQuranSimpleClean())
+	once.Do(func() {
+		q = NewQuranize(NewDefaultTransliteration(), NewQuranSimpleClean())
+	})
+	return q
 }
 
 // NewQuranize return new Quranize using Transliteration t and Quran q.
 func NewQuranize(t Transliteration, q Quran) Quranize {
-	quranize := Quranize{t, q, nil}
+	quranize := Quranize{t: t, q: q}
 	quranize.buildIndex()
 	return quranize
 }
