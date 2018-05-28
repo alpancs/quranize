@@ -1,4 +1,4 @@
-package quran
+package quranize
 
 import (
 	"os"

@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/alpancs/quran"
+  packages = ["corpus"]
+  revision = "ed4b223a929e2b6d05218b2f34b02e54df333d58"
+
+[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
@@ -22,6 +28,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "dbc03d7c9dd4e54b6993c8ece59c3174becb58bd828e500cf8ad825e340278c4"
+  inputs-digest = "7b7d5cad468ebbfe8a8c8e6b9508b2e88b7f063b26ff71dca0da917501b7d89a"
   solver-name = "gps-cdcl"
   solver-version = 1

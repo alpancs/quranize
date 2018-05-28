@@ -1,4 +1,4 @@
-package quran
+package quranize
 
 import (
 	"strings"
@@ -18,7 +18,7 @@ var (
 
 // NewDefaultTransliteration returns new Transliteration using default mapping.
 //
-// Mapping: https://github.com/alpancs/quran/blob/master/corpus/arabic_to_alphabet.go#L3
+// Mapping: https://github.com/alpancs/quranize/blob/master/corpus/arabic_to_alphabet.go#L3
 func NewDefaultTransliteration() Transliteration {
 	return NewTransliteration(corpus.ArabicToAlphabet)
 }
