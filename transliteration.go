@@ -3,7 +3,7 @@ package quranize
 import (
 	"strings"
 
-	"github.com/alpancs/quran/corpus"
+	"github.com/alpancs/quranize/corpus"
 )
 
 // Transliteration helps Quranize to encode arabic into alphabet.

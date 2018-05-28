@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	"github.com/alpancs/quran/corpus"
+	"github.com/alpancs/quranize/corpus"
 )
 
 // Quran stores information of every sura and aya.
