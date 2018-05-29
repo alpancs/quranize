@@ -75,13 +75,12 @@ func (q Quranize) Encode(s string) []string {
 
 // Locate returns locations of s (quran kalima), matching the whole word.
 func (q Quranize) Locate(s string) []Location {
-	if q.root == nil {
+	n := q.root
+	if n == nil {
 		return zeroLocs
 	}
 
-	harfs := []rune(s)
-	n := q.root
-	for _, harf := range harfs {
+	for _, harf := range []rune(s) {
 		n = n.getChild(harf)
 		if n == nil {
 			return zeroLocs
@@ -144,9 +143,8 @@ func appendUniq(results []string, newResult string) []string {
 
 // exists returns existence of s.
 func (q Quranize) exists(s string) bool {
-	harfs := []rune(s)
 	n := q.root
-	for _, harf := range harfs {
+	for _, harf := range []rune(s) {
 		n = n.getChild(harf)
 		if n == nil {
 			return false
