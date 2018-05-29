@@ -160,19 +160,19 @@ func (q Quranize) exists(s string) bool {
 // won't work.
 func (q *Quranize) buildIndex() {
 	q.root = &node{locations: zeroLocs}
-	for _, sura := range q.q.Suras {
-		for _, aya := range sura.Ayas {
-			q.indexAya([]rune(aya.Text), sura.Index, aya.Index)
+	for s, sura := range q.q.Suras {
+		for a, aya := range sura.Ayas {
+			q.indexAya([]rune(aya.Text), s+1, a+1)
 		}
 	}
 }
 
-func (q *Quranize) indexAya(harfs []rune, sura uint8, aya uint16) {
-	sliceIndex := uint8(0)
+func (q *Quranize) indexAya(harfs []rune, sura, aya int) {
+	wordIndex := uint8(0)
 	for i := range harfs {
 		if i == 0 || harfs[i-1] == ' ' {
-			q.buildTree(harfs[i:], Location{sura, aya, sliceIndex})
-			sliceIndex++
+			q.buildTree(harfs[i:], Location{uint8(sura), uint16(aya), wordIndex})
+			wordIndex++
 		}
 	}
 }

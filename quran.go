@@ -11,12 +11,9 @@ import (
 // It has suffix-tree index.
 type Quran struct {
 	Suras []struct {
-		Index uint8  `xml:"index,attr"`
-		Name  string `xml:"name,attr"`
-		Ayas  []struct {
-			Index     uint16 `xml:"index,attr"`
-			Text      string `xml:"text,attr"`
-			Bismillah string `xml:"bismillah,attr"`
+		Name string `xml:"name,attr"`
+		Ayas []struct {
+			Text string `xml:"text,attr"`
 		} `xml:"aya"`
 	} `xml:"sura"`
 }
