@@ -57,20 +57,20 @@ func ParseQuran(raw string) (q Quran, err error) {
 }
 
 // GetSuraName returns sura name from sura number in Quran q (number starting from 1).
-func (q Quran) GetSuraName(sura int) (string, error) {
-	if !(1 <= sura && sura <= len(q.Suras)) {
+func (q Quran) GetSuraName(sura uint8) (string, error) {
+	if !(1 <= sura && sura <= uint8(len(q.Suras))) {
 		return "", fmt.Errorf("invalid sura number %d", sura)
 	}
 	return q.Suras[sura-1].Name, nil
 }
 
 // GetAya returns aya text from sura number and aya number in Quran q (number starting from 1).
-func (q Quran) GetAya(sura, aya int) (string, error) {
-	if !(1 <= sura && sura <= len(q.Suras)) {
+func (q Quran) GetAya(sura uint8, aya uint16) (string, error) {
+	if !(1 <= sura && sura <= uint8(len(q.Suras))) {
 		return "", fmt.Errorf("invalid sura number %d", sura)
 	}
 	ayas := q.Suras[sura-1].Ayas
-	if !(1 <= aya && aya <= len(ayas)) {
+	if !(1 <= aya && aya <= uint16(len(ayas))) {
 		return "", fmt.Errorf("invalid sura number %d and aya number %d", sura, aya)
 	}
 	return ayas[aya-1].Text, nil
