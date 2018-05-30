@@ -17,13 +17,6 @@ type Quranize struct {
 	root *node
 }
 
-// Location represents a location in Quran.
-type Location struct {
-	Sura      uint8  // sura number
-	Aya       uint16 // aya number
-	WordIndex uint8  // assuming aya is splitted word by word using separator " "
-}
-
 type node struct {
 	locations []Location
 	children  []child
@@ -168,10 +161,10 @@ func (q *Quranize) buildIndex() {
 }
 
 func (q *Quranize) indexAya(harfs []rune, sura, aya int) {
-	wordIndex := uint8(0)
+	wordIndex := 0
 	for i := range harfs {
 		if i == 0 || harfs[i-1] == ' ' {
-			q.buildTree(harfs[i:], Location{uint8(sura), uint16(aya), wordIndex})
+			q.buildTree(harfs[i:], NewLocation(sura, aya, wordIndex))
 			wordIndex++
 		}
 	}

@@ -67,7 +67,7 @@ func ExampleQuranize_Encode() {
 func ExampleQuranize_Locate() {
 	quranize := NewDefaultQuranize()
 	fmt.Println(quranize.Locate("الحمد لله رب العالمين"))
-	// Output: [{1 2 0} {10 10 10} {39 75 13} {40 65 10}]
+	// Output: [1.2.0 10.10.10 39.75.13 40.65.10]
 }
 
 func TestLocateEmptyString(t *testing.T) {
@@ -86,7 +86,7 @@ func TestLocateNonAlquran(t *testing.T) {
 
 func TestLocateAlquran(t *testing.T) {
 	input := "بسم الله الرحمن الرحيم"
-	expected := []Location{Location{1, 1, 0}, Location{27, 30, 4}}
+	expected := []Location{NewLocation(1, 1, 0), NewLocation(27, 30, 4)}
 	actual := quranizeTest.Locate(input)
 	assert.Equal(t, expected, actual)
 }
