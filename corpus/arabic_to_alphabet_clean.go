@@ -1,7 +1,7 @@
 package corpus
 
 const ArabicToAlphabetClean = `
-ء ' k a
+ء ' k a i u
 آ a aa
 أ a u ' k
 ؤ ' k u

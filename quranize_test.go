@@ -43,6 +43,8 @@ func TestEncodeAlquran(t *testing.T) {
 		"wabasyiris sobirin":    []string{"وبشر الصابرين"},
 		"bissobri wassolah":     []string{"بالصبر والصلاة"},
 		"ya aiyuhalladzina":     []string{"يا أيها الذين"},
+		"syai in 'alim":         []string{"شيء عليم"},
+		"'alal qoumil kafirin":  []string{"على القوم الكافرين"},
 
 		"bismillah hirrohman nirrohim":                                                []string{"بسم الله الرحمن الرحيم"},
 		"alhamdu lillahi robbil 'alamin":                                              []string{"الحمد لله رب العالمين"},
