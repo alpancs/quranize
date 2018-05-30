@@ -10,8 +10,8 @@ type Location struct {
 }
 
 const (
-	suraMultiplier = int32(114 * 286)
-	ayaMultiplier  = int32(286)
+	ayaMultiplier  = int32(1000)
+	suraMultiplier = int32(1000 * ayaMultiplier)
 )
 
 // NewLocation returns new Location given sura number, aya number, and "word index"
