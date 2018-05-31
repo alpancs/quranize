@@ -36,7 +36,7 @@ func main() {
 
   locations := q.Locate(encodeds[0])
   fmt.Println(locations)
-  // Output: [1.2.0 10.10.10 39.75.13 40.65.10]
+  // Output: [{1 2 0} {10 10 10} {39 75 13} {40 65 10}]
 
   suraName, _ := quran.GetSuraName(locations[0].GetSura())
   fmt.Println(suraName)

@@ -69,7 +69,7 @@ func ExampleQuranize_Encode() {
 func ExampleQuranize_Locate() {
 	quranize := NewDefaultQuranize()
 	fmt.Println(quranize.Locate("الحمد لله رب العالمين"))
-	// Output: [1.2.0 10.10.10 39.75.13 40.65.10]
+	// Output: [{1 2 0} {10 10 10} {39 75 13} {40 65 10}]
 }
 
 func TestLocateEmptyString(t *testing.T) {
