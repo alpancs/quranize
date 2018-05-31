@@ -1,5 +1,9 @@
 package quranize
 
+import (
+	"fmt"
+)
+
 // Location represents a location in Quran.
 type Location struct {
 	sura      uint8
@@ -26,4 +30,8 @@ func (l Location) GetAya() int {
 // GetWordIndex returns word index of this location.
 func (l Location) GetWordIndex() int {
 	return int(l.wordIndex)
+}
+
+func (l Location) String() string {
+	return fmt.Sprintf("{%d %d %d}", l.GetSura(), l.GetAya(), l.GetWordIndex())
 }
