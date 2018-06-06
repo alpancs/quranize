@@ -36,7 +36,7 @@ const ArabicToAlphabetClean = `
 ه h ha hi hu
 و w wa wi wu u
 ى a
-ي y ya yi yu i
+ي y ya yi yu i iya iyi iyu
 ال a l la
  n
 `
