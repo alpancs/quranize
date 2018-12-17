@@ -117,6 +117,7 @@ func combine(heads, tails []string) []string {
 			combinations = append(combinations, head+"ا"+tail)
 			combinations = append(combinations, head+"ال"+tail)
 			combinations = append(combinations, head+" ال"+tail)
+			combinations = append(combinations, head+tail+"ى")
 			if tail == "و" {
 				combinations = append(combinations, head+tail+"ا")
 			}

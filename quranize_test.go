@@ -45,18 +45,19 @@ func TestEncodeAlquran(t *testing.T) {
 		"ya aiyuhalladzina":     []string{"يا أيها الذين"},
 		"syai in 'alim":         []string{"شيء عليم"},
 		"'alal qoumil kafirin":  []string{"على القوم الكافرين"},
+		"subhanalladzi asro":    []string{"سبحان الذي أسرى"},
 
-		"bismillah hirrohman nirrohim":                                                []string{"بسم الله الرحمن الرحيم"},
-		"alhamdu lillahi robbil 'alamin":                                              []string{"الحمد لله رب العالمين"},
-		"arrohma nirrohim":                                                            []string{"الرحمن الرحيم"},
-		"maaliki yau middin":                                                          []string{"مالك يوم الدين"},
-		"iyya kanakbudu waiyya kanastain":                                             []string{"إياك نعبد وإياك نستعين"},
-		"ihdinash shirothol mustaqim":                                                 []string{"اهدنا الصراط المستقيم"},
+		"bismillah hirrohman nirrohim":    []string{"بسم الله الرحمن الرحيم"},
+		"alhamdu lillahi robbil 'alamin":  []string{"الحمد لله رب العالمين"},
+		"arrohma nirrohim":                []string{"الرحمن الرحيم"},
+		"maaliki yau middin":              []string{"مالك يوم الدين"},
+		"iyya kanakbudu waiyya kanastain": []string{"إياك نعبد وإياك نستعين"},
+		"ihdinash shirothol mustaqim":     []string{"اهدنا الصراط المستقيم"},
 		"shirotholladzina an'am ta'alaihim ghoiril maghdzu bi'alaihim waladh dhollin": []string{"صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين"},
 	}
 	for input, expected := range testCases {
 		actual := quranizeTest.Encode(input)
-		assert.Equal(t, expected, actual)
+		assert.Equal(t, expected, actual, fmt.Sprintf("input: %s", input))
 	}
 }
 
