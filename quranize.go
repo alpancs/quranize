@@ -54,16 +54,27 @@ func NewQuranize(t Transliteration, q Quran) Quranize {
 
 // Encode returns arabic encodings of given string using Transliteration t.
 func (q Quranize) Encode(s string) []string {
+	s = strings.ToLower(strings.Replace(s, " ", "", -1))
 	var memo = make(map[string][]string)
-	s = strings.Replace(s, " ", "", -1)
-	s = strings.ToLower(s)
+	dirtyResults := append(q.quranize(s, memo), q.quranize(trimLastNonVowel(s), memo)...)
 	results := []string{}
-	for _, result := range q.quranize(s, memo) {
+	for _, result := range dirtyResults {
 		if len(q.Locate(result)) > 0 {
 			results = appendUniq(results, result)
 		}
 	}
 	return results
+}
+
+func trimLastNonVowel(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+	switch s[len(s)-1] {
+	case 'a', 'e', 'i', 'o', 'u':
+		return s
+	}
+	return s[:len(s)-1]
 }
 
 // Locate returns locations of s (quran kalima), matching the whole word.

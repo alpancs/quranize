@@ -28,8 +28,7 @@ func NewTransliteration(raw string) Transliteration {
 	hijaiyas := make(map[string][]string)
 	alphabetMaxLen := 0
 
-	trimmed := strings.TrimSpace(raw)
-	for _, line := range strings.Split(trimmed, "\n") {
+	for _, line := range strings.Split(strings.TrimSpace(raw), "\n") {
 		components := strings.Split(line, " ")
 		arabic := components[0]
 		for _, alphabet := range components[1:] {

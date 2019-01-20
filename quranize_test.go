@@ -46,6 +46,9 @@ func TestEncodeAlquran(t *testing.T) {
 		"syai in 'alim":         []string{"شيء عليم"},
 		"'alal qoumil kafirin":  []string{"على القوم الكافرين"},
 		"subhanalladzi asro":    []string{"سبحان الذي أسرى"},
+		"sabbihisma robbikal":   []string{"سبح اسم ربك"},
+		"hal ataka hadisul":     []string{"هل أتاك حديث"},
+		"kutiba 'alaikumus":     []string{"كتب عليكم"},
 
 		"bismillah hirrohman nirrohim":    []string{"بسم الله الرحمن الرحيم"},
 		"alhamdu lillahi robbil 'alamin":  []string{"الحمد لله رب العالمين"},
@@ -57,7 +60,7 @@ func TestEncodeAlquran(t *testing.T) {
 	}
 	for input, expected := range testCases {
 		actual := quranizeTest.Encode(input)
-		assert.Equal(t, expected, actual, fmt.Sprintf("input: %s", input))
+		assert.Equalf(t, expected, actual, "input: %s", input)
 	}
 }
 
