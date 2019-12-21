@@ -51,16 +51,17 @@ func TestEncodeAlquran(t *testing.T) {
 		"kutiba 'alaikumus":     {"كتب عليكم"},
 
 		"bismillah hirrohman nirrohim":    {"بسم الله الرحمن الرحيم"},
+		"bismillaahirrahmaanirrahiim":     {"بسم الله الرحمن الرحيم"},
 		"alhamdu lillahi robbil 'alamin":  {"الحمد لله رب العالمين"},
 		"arrohma nirrohim":                {"الرحمن الرحيم"},
-		"maaliki yau middin":              {"مالك يوم الدين"},
+		"maaliki yau middin":              {"مالك يوم الدين", "الملك يومئذ"},
 		"iyya kanakbudu waiyya kanastain": {"إياك نعبد وإياك نستعين"},
 		"ihdinash shirothol mustaqim":     {"اهدنا الصراط المستقيم"},
 		"shirotholladzina an'am ta'alaihim ghoiril maghdzu bi'alaihim waladh dhollin": {"صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين"},
 	}
 	for input, expected := range testCases {
 		actual := quranizeTest.Encode(input)
-		assert.Equalf(t, expected, actual, "input: %s", input)
+		assert.ElementsMatchf(t, expected, actual, "input = %#v\nexpected = %#v\nactual = %#v", input, expected, actual)
 	}
 }
 
@@ -104,5 +105,12 @@ func TestLocateAlquranBeforeBuildIndex(t *testing.T) {
 	input := "بسم الله الرحمن الرحيم"
 	expected := zeroLocs
 	actual := quranizeTest.Locate(input)
+	assert.Equal(t, expected, actual)
+}
+
+func TestRemoveConsecutiveChars(t *testing.T) {
+	input := "bismillaahirrahmaanirrahiim"
+	expected := "bismilahirahmanirahim"
+	actual := removeConsecutiveChars(input)
 	assert.Equal(t, expected, actual)
 }

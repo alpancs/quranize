@@ -6,6 +6,7 @@
 package quranize
 
 import (
+	"bytes"
 	"strings"
 	"sync"
 )
@@ -55,8 +56,11 @@ func NewQuranize(t Transliteration, q Quran) Quranize {
 // Encode returns arabic encodings of given string using Transliteration t.
 func (q Quranize) Encode(s string) []string {
 	s = strings.ToLower(strings.Replace(s, " ", "", -1))
-	var memo = make(map[string][]string)
-	dirtyResults := append(q.quranize(s, memo), q.quranize(trimLastNonVowel(s), memo)...)
+	memo := make(map[string][]string)
+	dirtyResults := q.quranize(s, memo)
+	dirtyResults = append(dirtyResults, q.quranize(trimLastNonVowel(s), memo)...)
+	dirtyResults = append(dirtyResults, q.quranize(removeConsecutiveChars(s), memo)...)
+
 	results := []string{}
 	for _, result := range dirtyResults {
 		if len(q.Locate(result)) > 0 {
@@ -75,6 +79,16 @@ func trimLastNonVowel(s string) string {
 		return s
 	}
 	return s[:len(s)-1]
+}
+
+func removeConsecutiveChars(s string) string {
+	buffer := bytes.NewBuffer(nil)
+	for i := range s {
+		if i == 0 || s[i-1] != s[i] {
+			buffer.WriteByte(s[i])
+		}
+	}
+	return buffer.String()
 }
 
 // Locate returns locations of s (quran kalima), matching the whole word.
